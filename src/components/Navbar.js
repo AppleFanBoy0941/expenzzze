@@ -53,6 +53,15 @@ const Navbar = () => {
 					}
 				}
 			}
+
+			& li:last-child a {
+				&:hover {
+					&:after {
+						width: 0;
+						opacity: 0;
+					}
+				}
+			}
 		`,
 	};
 
@@ -73,7 +82,7 @@ const Navbar = () => {
 						text="Get Started"
 						link="/expenses"
 						type="primary"
-						color={variables.primary}
+						color={variables.secondary}
 					/>
 				</li>
 			</ul>

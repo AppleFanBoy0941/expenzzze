@@ -45,6 +45,7 @@ const Hero = () => {
 			font-weight: 700;
 			margin-top: 0.5rem;
 			position: relative;
+			margin-bottom: 2rem;
 		`,
 		subheader: css`
 			font-size: 24px;
