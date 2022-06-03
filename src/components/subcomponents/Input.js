@@ -3,7 +3,15 @@ import { css } from '@emotion/react';
 import { variables } from '../../variables';
 import React from 'react';
 
-const Input = ({ register, type, label, color, placeholder, name }) => {
+const Input = ({
+	type,
+	label,
+	color,
+	placeholder,
+	name,
+	formLabel,
+	register,
+}) => {
 	const styles = {
 		label: css`
 			width: 100%;
@@ -41,7 +49,7 @@ const Input = ({ register, type, label, color, placeholder, name }) => {
 				css={styles.input}
 				placeholder={placeholder}
 				name={name}
-				{...register(name)}
+				{...register(formLabel)}
 			/>
 		</label>
 	);
