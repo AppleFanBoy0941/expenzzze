@@ -1,10 +1,12 @@
 /** @jsxImportSource @emotion/react */
 import { css } from '@emotion/react';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import { variables } from '../variables.js';
 import Button from './subcomponents/Button.js';
 
 const Navbar = () => {
+	const location = useLocation();
+
 	const styles = {
 		nav: css`
 			display: flex;
@@ -77,14 +79,17 @@ const Navbar = () => {
 				<li>
 					<Link to="about">About</Link>
 				</li>
-				<li>
-					<Button
-						text="Get Started"
-						link="/expenses"
-						type="primary"
-						color={variables.secondary}
-					/>
-				</li>
+
+				{location.pathname !== '/expenses' && (
+					<li>
+						<Button
+							text="Get Started"
+							link="/expenses"
+							type="primary"
+							color={variables.secondary}
+						/>
+					</li>
+				)}
 			</ul>
 		</nav>
 	);

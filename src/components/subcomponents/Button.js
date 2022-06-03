@@ -3,18 +3,21 @@ import { css } from '@emotion/react';
 
 import { Link } from 'react-router-dom';
 import { variables } from '../../variables';
+import FeatherIcon from 'feather-icons-react';
 
-const Button = ({ link, text, type, color }) => {
+const Button = ({ link, text, type, color, click, icon }) => {
 	const styles = {
 		button: css`
 			padding: 1rem 2.5rem;
-			display: inline-block;
+			display: flex;
 			width: fit-content;
 			border-radius: 1.5rem;
 			font-weight: 600;
 			transition: 0.3s;
 			color: ${color || variables.text};
 			position: relative;
+			border: none;
+			cursor: pointer;
 			${type === 'primary' &&
 			`
 				background-color: ${color};
@@ -33,6 +36,7 @@ const Button = ({ link, text, type, color }) => {
 			`
 				color: ${color};
 				border: 2px solid ${color};
+				background: transparent;
 
 				&:hover {
 					background-color: ${color};
@@ -44,7 +48,7 @@ const Button = ({ link, text, type, color }) => {
 					box-shadow: ${variables.subtle_shadow} ${color}30;
 				}
 			`}
-			${type === 'tertiary' &&
+				${type === 'tertiary' &&
 			`
 				border-radius: 4px;
 
@@ -69,12 +73,51 @@ const Button = ({ link, text, type, color }) => {
 					}
 				}
 			`}
+			${type === 'circle' &&
+			`
+				border-radius: 100px;
+				display: flex;
+				align-items: center;
+				justify-content: center;
+				width: 2rem;
+				height: 2rem;
+				padding: 0;
+				border: 2px solid ${color || variables.primary};
+				color: ${color || variables.primary};
+				background-color: transparent;
+
+				& svg {
+					height: 1rem;
+					width: 1rem;
+					stroke-width: 3px;
+				}
+
+				&:hover	{
+					background-color: ${color || variables.primary};
+					${
+						color === variables.tertiary
+							? `color: ${variables.text};`
+							: `color: ${variables.background};`
+					}
+				}
+				`};
 		`,
 	};
 	return (
-		<Link css={styles.button} to={link}>
-			{text}
-		</Link>
+		<>
+			{link && (
+				<Link css={styles.button} to={link}>
+					{text && text}
+					{icon && <FeatherIcon icon={icon} />}
+				</Link>
+			)}
+			{click && (
+				<button css={styles.button} onClick={click}>
+					{text && text}
+					{icon && <FeatherIcon icon={icon} />}
+				</button>
+			)}
+		</>
 	);
 };
 

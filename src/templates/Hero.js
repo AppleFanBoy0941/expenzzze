@@ -81,11 +81,16 @@ const Hero = () => {
 			color: ${variables.tertiary} !important;
 			animation: pulse 2s infinite 1s;
 		`,
+		div: css`
+			display: flex;
+			flex-direction: column;
+			align-items: center;
+		`,
 	};
 
 	return (
 		<header css={styles.hero}>
-			<div>
+			<div css={styles.div}>
 				<p css={styles.subheader}>
 					Expenses made so <span>eazzzy</span>
 				</p>
