@@ -1,16 +1,19 @@
 /** @jsxImportSource @emotion/react */
 import { css } from '@emotion/react';
 
-import { useState } from 'react';
+import { useContext, useState } from 'react';
 import { variables } from '../variables';
 import Button from './subcomponents/Button';
 import Creatable from 'react-select/creatable';
 import Input from './subcomponents/Input';
 import MoneyInput from './subcomponents/MoneyInput';
-import { useForm } from 'react-hook-form';
+import { useForm, Controller } from 'react-hook-form';
+import ThemeContext from '../context/themeContext';
 
-const ExpenseForm = () => {
-	const { register, handleSubmit, errors, setError, clearError } = useForm();
+const ExpenseForm = ({ submit }) => {
+	const { base, light, dark } = variables;
+	const colors = useContext(ThemeContext);
+
 	let ls = JSON.parse(localStorage.getItem('optionsList'));
 	if (ls === null) {
 		const defaultOptions = [
@@ -55,15 +58,15 @@ const ExpenseForm = () => {
 		form: css`
 			width: 100%;
 			padding: 2rem;
-			box-shadow: 0 2rem 2rem ${variables.primary}10;
-			border-radius: 0 0 2rem 2rem;
+			box-shadow: ${colors.bs_drop_top} ${colors.primary}10;
+			border-radius: ${colors.br_drop_top};
 			display: flex;
 			align-items: center;
 			gap: 1rem;
 			position: absolute;
 			top: 0;
 			left: 0;
-			background: ${variables.background};
+			background: ${colors.elevated};
 		`,
 		div: css`
 			width: 368px;
@@ -112,26 +115,72 @@ const ExpenseForm = () => {
 
 	const onSubmit = data => {
 		console.log(data);
+		const newItem = {
+			name: data.nameInput,
+			type: data.category,
+			currency: '$',
+			price: data.price,
+		};
+		submit(expenseList => {
+			localStorage.setItem(
+				'expenseList',
+				JSON.stringify([...expenseList, newItem])
+			);
+			return [newItem, ...expenseList];
+		});
+	};
+
+	const {
+		register,
+		formState: { errors },
+		handleSubmit,
+		control,
+	} = useForm();
+
+	const [selectedOptions, setSelectedOptions] = useState([]);
+
+	const handleChangeType = option => {
+		console.log(option.map(item => item.value));
+		setSelectedOptions(option.map(item => item.value));
+		return option.map(item => item.value);
 	};
 
 	return (
 		<form css={styles.form} onSubmit={handleSubmit(onSubmit)}>
 			<div css={styles.div}>
 				<Input
-					name="nameInput"
-					placeholder="Enter your expense..."
 					formLabel="nameInput"
 					register={register}
+					required
+					placeholder="Enter your expense..."
 				/>
-				<Creatable
-					options={options}
-					isMulti
-					onChange={event => handleChange(event)}
-					placeholder="Select a category..."
-					css={styles.select}
+				<Controller
+					control={control}
+					defaultValue={null}
 					name="category"
+					render={({ event, field: { onChange, value, ref } }) => {
+						return (
+							<Creatable
+								options={options}
+								isMulti
+								placeholder="Select a category..."
+								css={styles.select}
+								inputRef={ref}
+								onChange={val => {
+									handleChange(val);
+									onChange(handleChangeType(val));
+								}}
+							/>
+						);
+					}}
 				/>
-				<MoneyInput name="amountInput" placeholder="Enter price..." />
+				<MoneyInput
+					name="amountInput"
+					placeholder="Enter price..."
+					register={register}
+					required
+					formLabel="price"
+				/>
 			</div>
 			<Button
 				icon="plus"

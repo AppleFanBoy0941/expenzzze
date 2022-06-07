@@ -1,19 +1,19 @@
-import { useState } from 'react';
 /** @jsxImportSource @emotion/react */
 import { css } from '@emotion/react';
+import { useContext } from 'react';
 import { variables } from '../../variables';
-import NumberFormat from 'react-number-format';
+import themeContext from '../../context/themeContext';
 
-const MoneyInput = ({ label, currency, placeholder, register, name }) => {
-	const [value, setValue] = useState('');
-
+const MoneyInput = ({ label, currency, placeholder, register, formLabel }) => {
+	const { base, light, dark } = variables;
+	const colors = useContext(themeContext);
 	const styles = {
 		label: css`
 			display: flex;
 			flex-direction: column;
 			margin: 1rem 0;
 			width: 100%;
-			border: 2px solid ${variables.primary}30;
+			border: 2px solid ${colors.primary}30;
 			border-radius: 24px;
 		`,
 		div: css`
@@ -32,9 +32,9 @@ const MoneyInput = ({ label, currency, placeholder, register, name }) => {
 			padding: 0 0 0 4px;
 			font-size: 16px;
 			background-color: transparent;
-			color: ${variables.primary};
+			color: ${colors.tertiary};
 			font-family: 'Space Mono';
-			border-right: 1px solid ${variables.primary}30;
+			border-right: 1px solid ${colors.primary}30;
 		`,
 		input: css`
 			width: calc(100% - 36px);
@@ -43,6 +43,8 @@ const MoneyInput = ({ label, currency, placeholder, register, name }) => {
 			border: none;
 			padding: 2px 2px 2px 8px;
 			font-family: 'Space Mono';
+			background: ${colors.elevated};
+			color: ${colors.text};
 
 			::-webkit-outer-spin-button,
 			::-webkit-inner-spin-button {
@@ -62,24 +64,11 @@ const MoneyInput = ({ label, currency, placeholder, register, name }) => {
 			{label && <span>{label}</span>}
 			<div css={styles.div}>
 				<span css={styles.currency}>{currency || '$'}</span>
-				<NumberFormat
-					value={value}
-					thousandSeparator=" "
-					decimalSeparator=","
-					allowLeadingZeros={false}
-					allowNegative={false}
-					fixedDecimalScale={false}
-					decimalScale={0}
-					displayType="input"
-					type="text"
-					onChange={e => {
-						setValue(e.target.value);
-						console.log(parseFloat(value.replace(/\s/g, '')));
-					}}
+				<input
+					type="number"
 					css={styles.input}
 					placeholder={placeholder}
-					name={name}
-					// {...register(name)}
+					{...register(formLabel)}
 				/>
 			</div>
 		</label>

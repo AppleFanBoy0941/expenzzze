@@ -4,8 +4,13 @@ import { css } from '@emotion/react';
 import { Link } from 'react-router-dom';
 import { variables } from '../../variables';
 import FeatherIcon from 'feather-icons-react';
+import { useContext } from 'react';
+import ThemeContext from '../../context/themeContext';
 
 const Button = ({ link, text, type, color, click, icon }) => {
+	const { base, light, dark } = variables;
+	const colors = useContext(ThemeContext);
+
 	const styles = {
 		button: css`
 			padding: 1rem 2.5rem;
@@ -14,7 +19,7 @@ const Button = ({ link, text, type, color, click, icon }) => {
 			border-radius: 1.5rem;
 			font-weight: 600;
 			transition: 0.3s;
-			color: ${color || variables.text};
+			color: ${color || colors.text};
 			position: relative;
 			border: none;
 			cursor: pointer;
@@ -22,14 +27,14 @@ const Button = ({ link, text, type, color, click, icon }) => {
 			`
 				background-color: ${color};
 				${
-					color === variables.tertiary
-						? `color: ${variables.text};`
-						: `color: ${variables.background};`
+					color === colors.tertiary
+						? `color: ${colors.dark};`
+						: `color: ${colors.light};`
 				}
 
 				&:hover {
 					filter: brightness(110%);
-					box-shadow: ${variables.subtle_shadow} ${color}30;
+					box-shadow: ${base.subtle_shadow} ${color}30;
 				}
 			`}
 			${type === 'secondary' &&
@@ -41,11 +46,11 @@ const Button = ({ link, text, type, color, click, icon }) => {
 				&:hover {
 					background-color: ${color};
 					${
-						color === variables.tertiary
-							? `color: ${variables.text};`
-							: `color: ${variables.background};`
+						color === colors.tertiary
+							? `color: ${colors.dark};`
+							: `color: ${colors.light};`
 					}
-					box-shadow: ${variables.subtle_shadow} ${color}30;
+					box-shadow: ${base.subtle_shadow} ${color}30;
 				}
 			`}
 				${type === 'tertiary' &&
@@ -82,8 +87,8 @@ const Button = ({ link, text, type, color, click, icon }) => {
 				width: 2rem;
 				height: 2rem;
 				padding: 0;
-				border: 2px solid ${color || variables.primary};
-				color: ${color || variables.primary};
+				border: 2px solid ${color || colors.primary};
+				color: ${color || colors.primary};
 				background-color: transparent;
 
 				& svg {
@@ -93,11 +98,11 @@ const Button = ({ link, text, type, color, click, icon }) => {
 				}
 
 				&:hover	{
-					background-color: ${color || variables.primary};
+					background-color: ${color || colors.primary};
 					${
-						color === variables.tertiary
-							? `color: ${variables.text};`
-							: `color: ${variables.background};`
+						color === colors.tertiary
+							? `color: ${colors.text};`
+							: `color: ${colors.background};`
 					}
 				}
 				`};

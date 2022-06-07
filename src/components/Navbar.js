@@ -1,10 +1,16 @@
 /** @jsxImportSource @emotion/react */
 import { css } from '@emotion/react';
+import { useContext } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { variables } from '../variables.js';
 import Button from './subcomponents/Button.js';
+import ThemeToggle from './ThemeToggle.js';
+import ThemeContext from '../context/themeContext.js';
 
-const Navbar = () => {
+const Navbar = ({ setTheme }) => {
+	const { base, light, dark } = variables;
+	const colors = useContext(ThemeContext);
+
 	const location = useLocation();
 
 	const styles = {
@@ -14,12 +20,13 @@ const Navbar = () => {
 			justify-content: space-between;
 			height: 4rem;
 			width: 100vw;
-			box-shadow: ${variables.subtle_shadow} #00000015;
+			box-shadow: ${base.subtle_shadow} #00000015;
 			padding: 0 4rem;
 			font-family: 'Space Mono', monospace;
-			background-color: #ffffff30;
+			background-color: ${colors.elevated};
 			backdrop-filter: blur(1.5rem);
 			position: sticky;
+			color: ${colors.text};
 		`,
 		logo: css`
 			font-size: 24px;
@@ -39,7 +46,7 @@ const Navbar = () => {
 					content: '';
 					height: 3px;
 					width: 3px;
-					background-color: ${variables.secondary};
+					background-color: ${colors.secondary};
 					position: absolute;
 					bottom: 0;
 					left: 0;
@@ -79,6 +86,9 @@ const Navbar = () => {
 				<li>
 					<Link to="about">About</Link>
 				</li>
+				<li>
+					<ThemeToggle click={setTheme} />
+				</li>
 
 				{location.pathname !== '/expenses' && (
 					<li>
@@ -86,7 +96,7 @@ const Navbar = () => {
 							text="Get Started"
 							link="/expenses"
 							type="primary"
-							color={variables.secondary}
+							color={colors.secondary}
 						/>
 					</li>
 				)}

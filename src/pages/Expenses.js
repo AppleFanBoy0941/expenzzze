@@ -3,10 +3,11 @@ import { css } from '@emotion/react';
 import ExpenseFilter from '../components/ExpenseFilter';
 import ExpenseForm from '../components/ExpenseForm';
 import ExpenseList from '../templates/ExpenseList';
-import { useState } from 'react';
-import { variables } from '../variables';
+import { useContext, useState } from 'react';
+import ThemeContext from '../context/themeContext';
 
 const Expenses = () => {
+	const colors = useContext(ThemeContext);
 	const defaultList = [
 		{
 			name: 'Candy',
@@ -31,13 +32,21 @@ const Expenses = () => {
 		{ name: 'Clothes', type: ['shopping'], currency: '$', price: 17 },
 	];
 
-	const [expenseList, setExpenseList] = useState(defaultList);
+	const expenseListLocalStorage = JSON.parse(
+		localStorage.getItem('expenseList')
+	);
+	const [expenseList, setExpenseList] = useState(expenseListLocalStorage);
+	if (!expenseList) {
+		setExpenseList(defaultList);
+	}
+
 	const styles = {
 		main: css`
 			max-width: 1200px;
 			margin: 5rem auto;
 			display: flex;
 			gap: 2rem;
+			background: ${colors.background};
 		`,
 		expense_section: css`
 			width: 480px;
@@ -49,7 +58,7 @@ const Expenses = () => {
 		<main css={styles.main}>
 			<section css={styles.expense_section}>
 				<ExpenseList list={expenseList} />
-				<ExpenseForm />
+				<ExpenseForm submit={setExpenseList} />
 				<ExpenseFilter />
 			</section>
 			<aside>Ting her</aside>

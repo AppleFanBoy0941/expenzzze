@@ -1,17 +1,20 @@
 /** @jsxImportSource @emotion/react */
 import { css } from '@emotion/react';
 import { variables } from '../../variables';
-import React from 'react';
+import ThemeContext from '../../context/themeContext';
+import { useContext } from 'react';
 
 const Input = ({
 	type,
 	label,
 	color,
 	placeholder,
-	name,
-	formLabel,
 	register,
+	formLabel,
+	required,
 }) => {
+	const { base, light, dark } = variables;
+	const colors = useContext(ThemeContext);
 	const styles = {
 		label: css`
 			width: 100%;
@@ -23,21 +26,23 @@ const Input = ({
 			width: 100%;
 			min-height: 38px;
 			border-radius: 1.5rem;
-			border: 1px solid ${variables.primary}30;
-			box-shadow: 0 0 0 1px ${variables.primary}30;
+			border: 1px solid ${colors.primary}30;
+			box-shadow: 0 0 0 1px ${colors.primary}30;
 			font-family: 'Space Mono';
 			padding: 2px 2px 2px 8px;
 			transition: 0.3s;
+			background: ${colors.elevated};
+			color: ${colors.text};
 
 			:focus {
 				outline: none;
-				border: 1px solid ${variables.primary};
-				box-shadow: 0 0 0 1px ${variables.primary};
+				border: 1px solid ${colors.primary};
+				box-shadow: 0 0 0 1px ${colors.primary};
 			}
 		`,
 		span: css`
 			padding: 0 0 4px 8px;
-			color: ${color || variables.primary}80;
+			color: ${color || colors.primary}80;
 			font-size: 14px;
 		`,
 	};
@@ -48,7 +53,6 @@ const Input = ({
 				type={type || 'text'}
 				css={styles.input}
 				placeholder={placeholder}
-				name={name}
 				{...register(formLabel)}
 			/>
 		</label>

@@ -1,20 +1,24 @@
 /** @jsxImportSource @emotion/react */
 import { css } from '@emotion/react';
+import { useContext } from 'react';
 import Button from '../components/subcomponents/Button';
 import { variables } from '../variables';
+import ThemeContext from '../context/themeContext';
 
 const Hero = () => {
+	const { base, light, dark } = variables;
+	const colors = useContext(ThemeContext);
 	const styles = {
 		hero: css`
 			background: linear-gradient(
 				45deg,
-				${variables.primary},
-				${variables.secondary}
+				${colors.primary},
+				${colors.secondary}
 			);
 			background-size: 200% 100%;
 			background-position: left;
 			height: 80vh;
-			color: ${variables.background};
+			color: ${colors.background};
 			animation: slide 20s infinite;
 			display: flex;
 			justify-content: center;
@@ -22,7 +26,8 @@ const Hero = () => {
 			text-align: center;
 
 			& span {
-				color: ${variables.secondary};
+				color: ${colors.secondary};
+				text-shadow: 0 4px 1rem ${colors.dark}30;
 			}
 
 			@keyframes slide {
@@ -58,7 +63,7 @@ const Hero = () => {
 			top: -1.5rem;
 			font-size: 32px;
 			transform: rotate(-7.5deg);
-			color: ${variables.tertiary} !important;
+			color: ${colors.tertiary} !important;
 			animation: pulse 2s infinite;
 		`,
 		z2: css`
@@ -68,7 +73,7 @@ const Hero = () => {
 			font-size: 24px;
 			transform: rotate(3deg);
 			opacity: 0.75;
-			color: ${variables.tertiary} !important;
+			color: ${colors.tertiary} !important;
 			animation: pulse 2s infinite 0.5s;
 		`,
 		z3: css`
@@ -78,7 +83,7 @@ const Hero = () => {
 			font-size: 16px;
 			transform: rotate(15.5deg);
 			opacity: 0.5;
-			color: ${variables.tertiary} !important;
+			color: ${colors.tertiary} !important;
 			animation: pulse 2s infinite 1s;
 		`,
 		div: css`
@@ -106,7 +111,7 @@ const Hero = () => {
 					link="/expenses"
 					text="Get Started"
 					type="primary"
-					color={variables.tertiary}
+					color={colors.tertiary}
 				/>
 			</div>
 		</header>
